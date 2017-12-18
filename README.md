@@ -5,7 +5,7 @@ An Gutenberg wrapper for ACF functionality
 - Registers all built-in ACF fields as post_meta for the JSON-API to call. (SQL, JSON and PHP registered fields)
   Don't know how to register wildcard post meta fields for the API yet.
 - Create React Components for all built-in ACF fields (Yep this has to happen) Maybe start with one simple (textfield) and a complex one (relational)
-- Register ACF Components with a single JS/CSS adaption for 
+- Register ACF Components with a single JS file (unitl HTTP 2) 
 - Create Hooks for custom acf fields to register their ACF wrappers.
 
 ## What has happend so far?
