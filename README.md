@@ -9,7 +9,7 @@ An Gutenberg wrapper for ACF functionality
 - Create Hooks for custom acf fields to register their ACF wrappers.
 
 ## What has happend so far?
-- Registering registered ACF layout blocks as Gutenberg Blocks with pseudo markup.
+- Registering registered ~~ACF layout blocks as Gutenberg Blocks with pseudo markup.~~ ACF Field groups as Gutenberg Templates.
 - Registering Post Meta Fields (non repeatable)
 - Register more than one Gutenberg Block with a single compiled JS file.
 
