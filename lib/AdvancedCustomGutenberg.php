@@ -95,8 +95,10 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
                 # Remove existing normal ACF meta-boxes
                 $fieldGroup = $this->fieldGroups[$groupKey];
                 add_action('acf/gutenberg/removeAcfUi', function() use ($fieldGroup, $postType) {
-                    //echo "<pre>remove_meta_box('acf-{$fieldGroup['key']}', '$postType', '{$fieldGroup['position']}');</pre>";
-                    remove_meta_box('acf-'.$fieldGroup['key'], $postType, $fieldGroup['position']);
+                    #TODO: Make this prettier
+                    if (!array_key_exists('classic-editor', $_GET)) {
+                        remove_meta_box('acf-'.$fieldGroup['key'], $postType, $fieldGroup['position']);
+                    }
                 });
             }
             if (property_exists($postTypeObject, 'template') && !empty($postTypeObject->template)) {

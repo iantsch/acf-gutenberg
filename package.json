@@ -9,6 +9,7 @@
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "file-loader": "^1.1.5",
+    "react": "^16.1.1",
     "resolve-url-loader": "^2.2.0",
     "webpack": "^3.8.1"
   },
@@ -18,7 +19,6 @@
     "dev": "webpack --watch",
     "production": "NODE_ENV=production webpack",
     "live": "NODE_ENV=live webpack"
-
   },
   "repository": {
     "type": "git",
