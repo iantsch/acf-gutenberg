@@ -1,0 +1,4 @@
+.idea/
+node_modules/
+res/js/dist/
+!res/js/dist/.gitkeep

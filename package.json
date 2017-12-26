@@ -1,0 +1,37 @@
+{
+  "name": "acf-gutenberg",
+  "version": "0.0.0",
+  "description": "Render Advanced Custom Field Groups in Gutenberg Editor.",
+  "main": "webpack.config.js",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "file-loader": "^1.1.5",
+    "resolve-url-loader": "^2.2.0",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --watch",
+    "production": "NODE_ENV=production webpack",
+    "live": "NODE_ENV=live webpack"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:iantsch/acf-gutenberg.git"
+  },
+  "keywords": [
+    "acf",
+    "gutenberg"
+  ],
+  "author": "Christian Tschugg",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/iantsch/acf-gutenberg/issues"
+  },
+  "homepage": "https://github.com/iantsch/acf-gutenberg"
+}
