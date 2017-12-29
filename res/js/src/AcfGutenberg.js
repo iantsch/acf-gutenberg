@@ -1,41 +1,53 @@
-import Text from './Components/Text';
-import NotSupported from './Components/NotSupported';
+import AcfGroup from './Containers/AcfGroup';
+
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import Reducers from './Reducers/Reducers'
+import Services from './Services/Services';
 
 const { registerBlockType } = wp.blocks;
-
-//TODO: Make this hookable
-const ACF_COMPONENTS = {
-    text: Text
-};
 
 export default function register(groups = {}) {
     groups = new Map (Object.entries(groups));
     groups.forEach(group => {
+        let defaultState = {
+            Group : {
+                Key: group.key,
+                Fields: {}
+            }
+        };
+        group.fields.map(item => {
+            defaultState.Group.Fields[item.key] = item;
+        });
+        let store = createStore(Reducers, defaultState);
+        Services(store);
+
         let name = group.key.replace('_','-'),
             settings = {
                 title: group.title,
                 icon: 'shield',
-                category: 'layout',
+                category: 'common',
+                isPrivate: true,
                 supports: {
                     anchor: true,
                     customClassName: false,
                     html: false
                 },
 
-                edit: ( props ) => {
+                // Hack to make save button available
+                attributes: {
+                    content: {
+                        type: "timestamp",
+                        source: "meta",
+                        meta: `${group.key}_timestamp`
+                    }
+                },
+
+                edit: ({ attributes, setAttributes }) => {
                     return (
-                        <div id={`acf-${group.key}`} className={`${props.className} acf-postbox`}>
-                            <h2>{ group.title }</h2>
-                            <div className={`acf-fields`}>
-                                {group.fields.map(item => {
-                                    const TagName = typeof ACF_COMPONENTS[item.type] !== 'undefined' ? ACF_COMPONENTS[item.type] : NotSupported;
-                                    return (
-                                        <TagName {...item} acfKey={item.key} />
-                                    )
-                                })}
-                            </div>
-                            <pre>{ JSON.stringify(group, null, '  ')}</pre>
-                        </div>
+                        <Provider store={store}>
+                            <AcfGroup className={`${attributes.className} acf-postbox`} title={group.title} onGroupChange={(now) => setAttributes(`${group.key}_timestamp`, now)} />
+                        </Provider>
                     );
                 },
 
