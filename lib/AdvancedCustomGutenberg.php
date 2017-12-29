@@ -100,11 +100,18 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
                         remove_meta_box('acf-'.$fieldGroup['key'], $postType, $fieldGroup['position']);
                     }
                 });
+
+                # Register Timestamp (for Save-Button Hack)
+                register_meta( $postType, "{$groupKey}_timestamp", array(
+                    'show_in_rest' => true,
+                    'single' => true,
+                    'type' => 'timestamp',
+                ) );
             }
             if (property_exists($postTypeObject, 'template') && !empty($postTypeObject->template)) {
                 $templates = array_merge((array) $postTypeObject->template, $templates);
             }
-            //wp_die('<pre>'.print_r($templates,1));
+
             $postTypeObject->template = apply_filters('acf/gutenberg/templates', $templates, $postType);
 
             # Lock template, if group exists
@@ -126,21 +133,26 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
         }
     }
     public function registerApiEndpoints() {
-        # TODO: Post Route
         register_rest_route( 'acf-gutenberg/v1', '/meta=(?P<id>\d+)', array(
-            'methods' => 'GET',
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'getPostMeta'),
         ));
         register_rest_route( 'acf-gutenberg/v1', '/acf', array(
-            'methods' => 'GET',
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'getAcfFields'),
+        ));
+        register_rest_route( 'acf-gutenberg/v1', '/group=(?P<key>[a-zA-Z0-9-_]+)&id=(?P<id>\d+)', array(
+            'methods' => \WP_REST_Server::EDITABLE,
+            'callback' => array($this, 'postAcfGroup'),
         ));
     }
 
     public function getPostMeta($data) {
         $postId = intval(trim($data['id']));
         $postMeta = get_post_meta($postId);
-        $postMeta = array_map(function($n) {return $n[0];}, $postMeta);
+        if (is_array($postMeta)) {
+            $postMeta = array_map(function($n) {return maybe_unserialize($n[0]);}, $postMeta);
+        }
         return $postMeta;
     }
 
@@ -151,6 +163,24 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
             $group['fields'] = acf_get_fields($key);
         }
         return $groups;
+    }
+
+    public function postAcfGroup(\WP_REST_Request $request) {
+        $fields = (array) $request->get_param('fields');
+        $postId = $request->get_param('id');
+        if ($postId < 1) {
+            return array(
+                'status' => 500,
+                'message' => __('Post Id pending','acg')
+            );
+        }
+        foreach ($fields as $fieldKey => $field) {
+            @update_field($fieldKey, $field['value'], $postId);
+        }
+        return array(
+            'status' => 200,
+            'message' =>  __('OK','acg')
+        );
     }
 
     protected function extractLayouts(&$return, $fields, $parentKey = '') {
