@@ -171,6 +171,7 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
         ));
     }
 
+    #TODO: Refactor
     public function getPostMeta($data) {
         $postId = intval(trim($data['id']));
         $postMeta = get_post_meta($postId);
@@ -342,6 +343,7 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
     }
 
     protected function extractPostTypes(&$return, $fields, $group) {
+        # TODO: Refactor
         foreach ($fields as $or) {
             foreach ($or as $and) {
                 if (!isset($and['param'])) {

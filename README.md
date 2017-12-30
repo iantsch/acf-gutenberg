@@ -6,6 +6,12 @@ Tested with
 - Gutenberg 1.9.1
 - ACF Pro 5.6.7
 
+## How to use
+1. Download and extract into WordPress plugins folder
+2. Load NPM dependencies with ``npm install``
+3. Create JS production files ``npm run production``
+4. Activate Plugin.
+
 ## Proof of concept
 - Register custom JSON API routes for acf-gutenberg, for data handling.
 - Create React Components for all built-in ACF fields (Yep, I know...) Maybe start with one simple (textfield) and a complex one (relational)
