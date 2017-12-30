@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import Field from '../Components/Field';
 
-export default class Text extends Component {
+export default class Url extends Component {
     onChange(e) {
         return this.props.onChange(this.props.acfKey, e.currentTarget.value);
     }
@@ -9,7 +9,7 @@ export default class Text extends Component {
         let attributes = {
             id: `acf-${this.props.acfKey}`,
             name: `acf[${this.props.acfKey}]`,
-            type: 'text',
+            type: 'url',
             onChange: (e) => this.onChange(e),
             value: this.props.value ? this.props.value : this.props['default_value']
         };
@@ -24,7 +24,8 @@ export default class Text extends Component {
     render() {
         return (
             <Field {...this.props}>
-                <div className={`acf-input-wrap`}>
+                <div className={`acf-input-wrap acf-url`}>
+                    <i class="acf-icon -globe -small" />
                     <input {...this.getAttributes()}/>
                 </div>
             </Field>

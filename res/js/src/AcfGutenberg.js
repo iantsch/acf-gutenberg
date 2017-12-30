@@ -46,7 +46,7 @@ export default function register(groups = {}) {
                 edit: ({ attributes, setAttributes }) => {
                     return (
                         <Provider store={store}>
-                            <AcfGroup className={`${attributes.className} acf-postbox`} title={group.title} onGroupChange={(now) => setAttributes(`${group.key}_timestamp`, now)} />
+                            <AcfGroup title={group.title} onGroupChange={(now) => setAttributes(`${group.key}_timestamp`, now)} />
                         </Provider>
                     );
                 },

@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import Field from '../Components/Field';
 
-export default class Text extends Component {
+export default class Email extends Component {
     onChange(e) {
         return this.props.onChange(this.props.acfKey, e.currentTarget.value);
     }
@@ -9,7 +9,7 @@ export default class Text extends Component {
         let attributes = {
             id: `acf-${this.props.acfKey}`,
             name: `acf[${this.props.acfKey}]`,
-            type: 'text',
+            type: 'email',
             onChange: (e) => this.onChange(e),
             value: this.props.value ? this.props.value : this.props['default_value']
         };

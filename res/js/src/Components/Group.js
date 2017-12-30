@@ -1,10 +1,24 @@
 import {Component} from 'react';
 import Text from './Text';
+import Textarea from './Textarea';
+import Number from './Number';
+import Range from './Range';
+import Email from './Email';
+import Url from './Url';
+import Password from './Password';
+import Relationship from './Relationship';
 import NotSupported from './NotSupported';
 
 // TODO: Make this hookable
 const ACF_COMPONENTS = {
-    text: Text
+    text: Text,
+    textarea: Textarea,
+    number: Number,
+    range: Range,
+    email: Email,
+    url: Url,
+    password: Password,
+    relationship: Relationship
 };
 
 export default class Group extends Component {
@@ -31,7 +45,7 @@ export default class Group extends Component {
     render() {
         let fields = Object.keys(this.props.Group.Fields);
         return (
-            <div id={`acf-${this.props.Group.Key}`} className={this.props.className}>
+            <div id={`acf-${this.props.Group.Key}`} className="acg-container">
                 <h2>{ this.props.title }</h2>
                 <div className={`acf-fields`}>
                     {fields.map(itemKey => {

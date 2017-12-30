@@ -28,6 +28,7 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
         add_action( 'init', array($this, 'registerAcfForGutenberg'));
         add_action( 'rest_api_init', array($this, 'registerApiEndpoints'));
         add_action( 'enqueue_block_assets', array($this, 'enqueueAcfLayouts'), 11 );
+        add_action( 'enqueue_block_assets', array($this, 'deregisterAcfScripts'));
         add_action( 'acf/input/admin_head', array($this, 'removeAcfUi'), 99 );
         # TODO: Remove after proof of concept phase
         add_action( 'acf/gutenberg/render', array($this, 'debugRender'), 10 , 3 );
@@ -35,6 +36,13 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
 
     public function removeAcfUi() {
         do_action('acf/gutenberg/removeAcfUi');
+    }
+
+    public function deregisterAcfScripts() {
+        if (! isset( $_REQUEST['classic-editor'] )) {
+            wp_deregister_script('acf-input');
+            wp_deregister_script('acf-field-group');
+        }
     }
 
     public function registerAcfForGutenberg() {
@@ -145,6 +153,22 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
             'methods' => \WP_REST_Server::EDITABLE,
             'callback' => array($this, 'postAcfGroup'),
         ));
+        register_rest_route( 'acf-gutenberg/v1', '/postTypes=(?P<postTypes>[a-zA-Z0-9-_,]+)', array(
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => array($this, 'getPostTypes'),
+        ));
+        register_rest_route( 'acf-gutenberg/v1', '/terms=(?P<taxonomies>[a-zA-Z0-9-_,]+)', array(
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => array($this, 'getTerms'),
+        ));
+        register_rest_route( 'acf-gutenberg/v1', '/posts=(?P<posts>[a-z0-9,]+)', array(
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => array($this, 'getPosts'),
+        ));
+        register_rest_route( 'acf-gutenberg/v1', '/choices=(?P<filter>[a-zA-Z0-9,%:_-|]+)', array(
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => array($this, 'getChoices'),
+        ));
     }
 
     public function getPostMeta($data) {
@@ -163,6 +187,126 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
             $group['fields'] = acf_get_fields($key);
         }
         return $groups;
+    }
+
+    public function getPostTypes(\WP_REST_Request $request) {
+        $filter = explode(',', $request->get_param('postTypes'));
+        $postTypes = array();
+        if ($filter[0] === 'all') {
+            $filter = get_post_types(array(
+                'public' => true
+            ), 'object');
+        } else {
+            foreach ($filter as $i => &$postType) {
+                $postType = get_post_type_object( $postType );
+            }
+        }
+        foreach ($filter as $postType) {
+            if ($postType->name === "attachment") {
+                continue;
+            }
+            $postTypes[$postType->name] = $postType->labels->name;
+        }
+        return $postTypes;
+    }
+
+    public function getTerms(\WP_REST_Request $request) {
+        $filter = explode(',', $request->get_param('taxonomies'));
+        $terms = array();
+        if ($filter[0] === 'all') {
+            $filter = get_taxonomies(array(
+                'public' => true
+            ), 'object');
+        } else {
+            foreach ($filter as &$taxonomy) {
+                $taxonomy = get_taxonomy( $taxonomy );
+            }
+        }
+        foreach ($filter as $taxonomy) {
+            $terms[$taxonomy->name]['label'] = $taxonomy->labels->name;
+            $terms[$taxonomy->name]['choices'] = array();
+            $taxonomyTerms = get_terms(array('taxonomy' => $taxonomy->name));
+            if (is_a($taxonomyTerms, 'WP_Error') || empty($taxonomyTerms)){
+                unset($terms[$taxonomy->name]);
+                continue;
+            }
+            foreach ($taxonomyTerms as $term) {
+                $terms[$taxonomy->name]['choices'][$taxonomy->name.":".$term->slug] = $term->name;
+            }
+        }
+        return $terms;
+    }
+
+    public function getPosts(\WP_REST_Request $request) {
+        if ($request->get_param('posts') === 'all') {
+            return array();
+        }
+        $args = array(
+            'post_type' => 'any',
+            'posts_per_page' => -1,
+            'post__in' => explode(',', $request->get_param('posts'))
+        );
+        $loop = new \WP_Query($args);
+
+        //Fallback if some wierd shit is happening.
+        if (!$loop->have_posts()) {
+            return $args['post__in'];
+        }
+        $posts = array();
+        while ($loop->have_posts()) {
+            $loop->the_post();
+            $posts[get_the_ID()] = get_the_title();
+        }
+        return $posts;
+    }
+
+    public function getChoices(\WP_REST_Request $request) {
+        $args = array(
+            'post_type' => 'any',
+            'posts_per_page' => 15,
+            'post_status' => 'publish',
+            'paged' => 1,
+            'orderby' => 'post_type title',
+            'order' => 'ASC'
+        );
+        $filters = explode(',', urldecode($request->get_param('filter')));
+        foreach ($filters as $filter) {
+            $filter = explode('|', $filter, 2);
+            if ($filter[1]) {
+                switch($filter[0]) {
+                    case 's':
+                    case 'paged':
+                        $args[$filter[0]] = $filter[1];
+                        break;
+                    case 'postType':
+                        $args['post_type'] = array($filter[1]);
+                        break;
+                    case 'taxonomy':
+                        $tax = explode(':', $filter[1], 2);
+                        $args['tax_query'] = array(
+                            array(
+                                'taxonomy' => $tax[0],
+                                'terms' => array($tax[1]),
+                                'field' => 'slug',
+                                'include_children' => true,
+                                'operator' => 'IN'
+                            )
+                        );
+                }
+            }
+        }
+        $loop = new \WP_Query($args);
+
+        $posts = array();
+        if (!$loop->have_posts()) {
+            return $posts;
+        }
+        global $post;
+        while ($loop->have_posts()) {
+            $loop->the_post();
+            $posts[get_post_type()][get_the_ID()] = get_the_title();
+        }
+        return $posts;
     }
 
     public function postAcfGroup(\WP_REST_Request $request) {

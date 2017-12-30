@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Gutenberg
 Plugin URI: http://mbt.wien
 Description: Render Advanced Custom Field Groups in Gutenberg Editor.
-Version: 0.0.0
+Version: 0.1.0
 Author: Christian Tschugg
 Author URI: http://mbt.wien
 Copyright: Christian Tschugg
