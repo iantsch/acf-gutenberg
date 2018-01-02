@@ -30,9 +30,10 @@ export default class Field extends Component {
                 {this.props.hideLabel ? '' : (
                     <div className={`acf-label`}>
                         <label for={`acf-${this.props.acfKey}`}>
-                            {this.props.label}&nbsp;
-                            {this.props.required ? (<span class="acf-required">*</span>) : ''}
+                            {this.props.label}
+                            {this.props.required ? (<span class="acf-required">&nbsp;*</span>) : ''}
                         </label>
+                        {this.props.instructions ? (<p className="description">{this.props.instructions}</p>) : ''}
                     </div>
                 )}
                 <div className={`acf-input`}>

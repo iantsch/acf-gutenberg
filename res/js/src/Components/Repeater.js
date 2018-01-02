@@ -64,7 +64,11 @@ export default class Repeater extends Component {
                                 <th className="acf-row-handle" />
                                 {this.props['sub_fields'].map(field => {
                                     return (
-                                        <th {...this.getThAttributes(field.wrapper)}>{field.label}</th>
+                                        <th {...this.getThAttributes(field.wrapper)}>
+                                            {field.label}
+                                            {field.required ? (<span class="acf-required">&nbsp;*</span>) : ''}
+                                            {field.instructions ? (<p className="description">{field.instructions}</p>) : ''}
+                                        </th>
                                     )
                                 })}
                                 <th className="acf-row-handle" />
