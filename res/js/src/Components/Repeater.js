@@ -21,6 +21,15 @@ export default class Repeater extends Component {
         });
         return name;
     }
+    getFieldProps(field) {
+        let fieldProps = JSON.parse(JSON.stringify(field));
+        fieldProps.fieldId = `'acf-${this.props.acfKey}-${i}-`;
+        fieldProps.fieldName = `acf[${this.props.acfKey}][${i}]`;
+        fieldProps.value = row[field.name];
+        fieldProps.hideLabel = this.props.layout === 'table';
+        fieldProps.tag = this.props.layout === 'table' ? 'td' : false;
+        return fieldProps;
+    }
     onModifyRows(i, type = 'add') {
         let newValue = this.getValue();
         if (type === 'add') {
@@ -64,13 +73,8 @@ export default class Repeater extends Component {
                                     <td className="acf-row-handle order"><span>{(i + 1)}</span></td>
                                     {this.props['sub_fields'].map(field => {
                                         let TagName = ACF_COMPONENTS[field.type] ? ACF_COMPONENTS[field.type]: NotSupported;
-                                        let fieldProps = JSON.parse(JSON.stringify(field));
-                                        fieldProps.fieldId = `'acf-${this.props.acfKey}-${i}-`;
-                                        fieldProps.fieldName = `acf[${this.props.acfKey}][${i}]`;
-                                        fieldProps.value = row[field.name];
-                                        fieldProps.hideLabel = this.props.layout === 'table';
-                                        fieldProps.tag = this.props.layout === 'table' ? 'td' : false;
-                                        return fieldProps.tag = this.props.layout === 'table' ? (
+                                        let fieldProps = this.getFieldProps(field);
+                                        return this.props.layout === 'table' ? (
                                             <TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />
                                         ) : (
                                             <td className={`acf-fields${this.props.layout === 'row'? ' -left' : ''}`}>
