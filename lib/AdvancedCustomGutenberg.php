@@ -74,19 +74,21 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
     }
 
     public function enqueueAcfLayouts() {
-        wp_enqueue_script(
-            $this->prefix.'/lib',
-            ACG_URL.'res/js/dist/AcfGutenberg.js',
-            array(
-                'wp-blocks',
-                'wp-i18n',
-                'wp-element'
-            )
-        );
-        wp_add_inline_script( $this->prefix.'/lib', sprintf(
-            'try{acg.register(%s)}catch(e){}',
-            json_encode($this->fieldGroups)
-        ) );
+        if (! isset( $_REQUEST['classic-editor'] )) {
+            wp_enqueue_script(
+                $this->prefix . '/lib',
+                ACG_URL . 'res/js/dist/AcfGutenberg.js',
+                array(
+                    'wp-blocks',
+                    'wp-i18n',
+                    'wp-element'
+                )
+            );
+            wp_add_inline_script($this->prefix . '/lib', sprintf(
+                'try{acg.register(%s)}catch(e){}',
+                json_encode($this->fieldGroups)
+            ));
+        }
     }
 
     protected function registerAcfGroups() {
