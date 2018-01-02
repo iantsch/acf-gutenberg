@@ -33,29 +33,15 @@ const updateFieldByKey = (obj, key, value) => {
     return obj;
 };
 
-const updateFields = (obj, values) => {
-    for (var property in obj) {
-        if (obj.hasOwnProperty(property)){
-            let currentKey = false;
-            for( let key in values ) {
-                if( values.hasOwnProperty( key ) ) {
-                    if( values[ key ] === property ){
-                        currentKey = key;
-                    }
-                }
-            }
-            if (false === currentKey) {
-                continue;
-            }
-            currentKey = currentKey.substr(1);
-            if (typeof obj[property] === 'object') {
-                obj[property] = updateFields(obj[property], values);
-            }
-            if( values.hasOwnProperty( currentKey ) && obj[property].name === currentKey ) {
-                obj[property].value = values[currentKey];
+const updateFields = (obj, values, depth = 0) => {
+    Object.keys(values).map(fieldName => {
+        if (values[fieldName].hasOwnProperty('key')) {
+            let key = values[fieldName].key;
+            if (obj.hasOwnProperty(key)) {
+                obj[key].value = values[fieldName].value;
             }
         }
-    }
+    });
     return obj;
 };
 

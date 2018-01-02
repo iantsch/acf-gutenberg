@@ -176,11 +176,7 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
     #TODO: Refactor
     public function getPostMeta($data) {
         $postId = intval(trim($data['id']));
-        $postMeta = get_post_meta($postId);
-        if (is_array($postMeta)) {
-            $postMeta = array_map(function($n) {return maybe_unserialize($n[0]);}, $postMeta);
-        }
-        return $postMeta;
+        return get_field_objects($postId);
     }
 
     public function getAcfFields() {
