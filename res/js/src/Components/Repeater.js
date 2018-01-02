@@ -21,7 +21,7 @@ export default class Repeater extends Component {
         });
         return name;
     }
-    getFieldProps(field) {
+    getFieldProps(field, row, i) {
         let fieldProps = JSON.parse(JSON.stringify(field));
         fieldProps.fieldId = `'acf-${this.props.acfKey}-${i}-`;
         fieldProps.fieldName = `acf[${this.props.acfKey}][${i}]`;
@@ -79,17 +79,19 @@ export default class Repeater extends Component {
                             return (
                                 <tr>
                                     <td className="acf-row-handle order"><span>{(i + 1)}</span></td>
-                                    {this.props['sub_fields'].map(field => {
+                                    {this.props.layout === 'table' ? this.props['sub_fields'].map(field => {
                                         let TagName = ACF_COMPONENTS[field.type] ? ACF_COMPONENTS[field.type]: NotSupported;
-                                        let fieldProps = this.getFieldProps(field);
-                                        return this.props.layout === 'table' ? (
-                                            <TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />
-                                        ) : (
-                                            <td className={`acf-fields${this.props.layout === 'row'? ' -left' : ''}`}>
-                                                <TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />
-                                            </td>
-                                        )
-                                    })}
+                                        let fieldProps = this.getFieldProps(field, row, i);
+                                        return (<TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />);
+                                    }) : (
+                                        <td className={`acf-fields${this.props.layout === 'row'? ' -left' : ''}`}>
+                                            {this.props['sub_fields'].map(field => {
+                                                let TagName = ACF_COMPONENTS[field.type] ? ACF_COMPONENTS[field.type]: NotSupported;
+                                                let fieldProps = this.getFieldProps(field, row, i);
+                                                return (<TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />);
+                                            })}
+                                        </td>
+                                    )}
                                     <td className="acf-row-handle remove">
                                         <a class="acf-icon -plus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Add Row')} onClick={() => this.onModifyRows(i)} />
                                         <a class="acf-icon -minus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Remove Row')} onClick={() => this.onModifyRows(i, 'remove')} />
