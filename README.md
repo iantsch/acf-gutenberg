@@ -22,6 +22,7 @@ Tested with
 - Register a timestamp post meta field for each ACF field group to enable update button on changes.
 - Register more than one gutenberg block with a single compiled JS file. Since there are no nested gutenberg blocks (yet), work around this issue.
 - Basic fields (Text, E-Mail,…)
+- Repeater field
 - Relationship field (Yay a complex react component with custom JSON API)
 
 ## What is currently missing [Priority]
@@ -29,7 +30,7 @@ Tested with
 - Content fields [MID] _Copy/Paste existing Gutenberg blocks functionality for content and images._
 - Choice fields [HIGH]
 - Relational fields (except Relationship) [HIGH]
-- Layout fields [HIGH]
+- Layout fields (except Repeater) [HIGH]
 - jQuery fields [LOW] _Maybe some preexisting react components?_
 - Conditional fields [MID]
 - Translation files (Everything is wrapped in i10n functions) [LOW]
