@@ -43,6 +43,14 @@ export default class Repeater extends Component {
         }
         this.props.onChange(this.props.acfKey, newValue);
     }
+    getThAttributes(wrapper) {
+        let attributes = {
+            className: 'acf-th'
+        };
+        if (wrapper.width) {
+            attributes.style = { width: `${wrapper.width}%`};
+        }
+    }
     render() {
         let buttonLabel = this.props['button_label'] ? this.props['button_label'] : wp.i18n.__('Add Row');
         let value = this.getValue();
@@ -56,7 +64,7 @@ export default class Repeater extends Component {
                                 <th className="acf-row-handle" />
                                 {this.props['sub_fields'].map(field => {
                                     return (
-                                        <th className="acf-th">{field.label}</th>
+                                        <th {...this.getThAttributes(field.wrapper)}>{field.label}</th>
                                     )
                                 })}
                                 <th className="acf-row-handle" />
