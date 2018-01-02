@@ -7,7 +7,7 @@ export default class Range extends Component {
     }
     getAttributes(type) {
         let attributes = {
-            id: `${this.props.fieldId ? this.props.fieldId : 'acf'}-${this.props.acfKey}${type === 'number' ? '-alt' : ''}`,
+            id: `${this.props.fieldId ? this.props.fieldId : 'acf-'}${this.props.acfKey}${type === 'number' ? '-alt' : ''}`,
             type: type,
             onChange: (e) => this.onChange(e),
             step: this.props.step ? this.props.step : 1,
