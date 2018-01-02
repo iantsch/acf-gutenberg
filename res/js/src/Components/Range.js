@@ -7,8 +7,7 @@ export default class Range extends Component {
     }
     getAttributes(type) {
         let attributes = {
-            id: `acf-${this.props.acfKey}${type === 'number' ? '-alt' : ''}`,
-            name: `acf[${this.props.acfKey}]`,
+            id: `${this.props.fieldId ? this.props.fieldId : 'acf'}-${this.props.acfKey}${type === 'number' ? '-alt' : ''}`,
             type: type,
             onChange: (e) => this.onChange(e),
             step: this.props.step ? this.props.step : 1,
@@ -17,10 +16,10 @@ export default class Range extends Component {
         };
         attributes.value = this.props.value ? this.props.value : (this.props['default_value'] ? this.props['default_value'] : attributes.min);
         if (type === 'range') {
-            attributes.name = `acf[${this.props.acfKey}]`
+            attributes.name = `${this.props.fieldName ? this.props.fieldName : 'acf'}[${this.props.acfKey}]`;
         }
         if (type === 'number') {
-            attributes.style = {width: '3.9em'}
+            attributes.style = {width: '3.9em'};
         }
         if (type === 'number' && this.props.placeholder !== '') {
             attributes.placeholder = this.props.placeholder;

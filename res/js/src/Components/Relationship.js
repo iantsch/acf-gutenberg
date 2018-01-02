@@ -81,8 +81,8 @@ export default class Relationship extends Component {
     }
     getHiddenAttributes() {
         let attributes = {
-            id: `acf-${this.props.acfKey}`,
-            name: `acf[${this.props.acfKey}]`,
+            id: `${this.props.fieldId ? this.props.fieldId : 'acf'}-${this.props.acfKey}`,
+            name: `${this.props.fieldName ? this.props.fieldName : 'acf'}[${this.props.acfKey}]`,
             type: 'hidden',
             onChange: (e) => this.onChange(e),
             value: JSON.stringify(this.props.value ? this.props.value : this.props['default_value'])

@@ -7,10 +7,11 @@ import Email from './Email';
 import Url from './Url';
 import Password from './Password';
 import Relationship from './Relationship';
+import Repeater from './Repeater';
 import NotSupported from './NotSupported';
 
 // TODO: Make this hookable
-const ACF_COMPONENTS = {
+export const ACF_COMPONENTS = {
     text: Text,
     textarea: Textarea,
     number: Number,
@@ -18,7 +19,8 @@ const ACF_COMPONENTS = {
     email: Email,
     url: Url,
     password: Password,
-    relationship: Relationship
+    relationship: Relationship,
+    repeater: Repeater
 };
 
 export default class Group extends Component {
@@ -45,7 +47,7 @@ export default class Group extends Component {
     render() {
         let fields = Object.keys(this.props.Group.Fields);
         return (
-            <div id={`acf-${this.props.Group.Key}`} className="acg-container">
+            <div id={`acf-${this.props.Group.Key}`} className="acg-container ">
                 <h2>{ this.props.title }</h2>
                 <div className={`acf-fields`}>
                     {fields.map(itemKey => {

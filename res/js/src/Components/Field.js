@@ -24,20 +24,23 @@ export default class Field extends Component {
         return attributes;
     }
     render() {
+        const TagName = this.props.tag ? this.props.tag : 'div';
         return (
-            <div {...this.getAttributes()}>
-                <div className={`acf-label`}>
-                    <label for={`acf-${this.props.acfKey}`}>
-                        {this.props.label}&nbsp;
-                        {this.props.required ? (<span class="acf-required">*</span>) : ''}
-                    </label>
-                </div>
+            <TagName {...this.getAttributes()}>
+                {this.props.hideLabel ? '' : (
+                    <div className={`acf-label`}>
+                        <label for={`acf-${this.props.acfKey}`}>
+                            {this.props.label}&nbsp;
+                            {this.props.required ? (<span class="acf-required">*</span>) : ''}
+                        </label>
+                    </div>
+                )}
                 <div className={`acf-input`}>
                     {this.props.prepend ? (<div class="acf-input-prepend" dangerouslySetInnerHTML={{__html: this.props.prepend}}/>) : ''}
                     {this.props.append ? (<div class="acf-input-append" dangerouslySetInnerHTML={{__html: this.props.append}}/>) : ''}
                     {this.props.children}
                 </div>
-            </div>
+            </TagName>
         )
     }
 }
