@@ -171,15 +171,14 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
             'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'getChoices'),
         ));
-        register_rest_route( 'acf-gutenberg/v1', '/media=(?P<attachmentId>[0-9]+)', array(
+        register_rest_route( 'acf-gutenberg/v1', '/media=(?P<attachmentId>[0-9]+)&size=(?P<size>[a-zA-Z0-9-_]+)', array(
             'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'getMedia'),
         ));
     }
 
-    #TODO: Refactor
-    public function getPostMeta($data) {
-        $postId = intval(trim($data['id']));
+    public function getPostMeta(\WP_REST_Request $request) {
+        $postId = intval($request->get_param('id'));
         return get_field_objects($postId);
     }
 
@@ -314,7 +313,8 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
 
     public function getMedia(\WP_REST_Request $request) {
         $attachmentId = $request->get_param('attachmentId');
-        return @wp_get_attachment_image_src( $attachmentId, 'thumbnail' )[0];
+        $size = $request->get_param('size');
+        return @wp_get_attachment_image_src( $attachmentId, $size )[0];
     }
 
     public function postAcfGroup(\WP_REST_Request $request) {

@@ -24,7 +24,7 @@ export default class Layout extends Component {
     }
     fetchRemoteImage(attachmentId) {
         let fetch = {
-            path: `/acf-gutenberg/v1/media=${attachmentId}`,
+            path: `/acf-gutenberg/v1/media=${attachmentId}&size=${this.props['preview_size']}`,
             method: 'GET',
             contentType: 'application/json',
             success: response => {
@@ -35,8 +35,8 @@ export default class Layout extends Component {
     }
     onSelectImage(media) {
         let newState = {url: media.url};
-        if (media.hasOwnProperty('sizes') && media.sizes.hasOwnProperty('thumbnail')) {
-            newState.url = media.sizes.thumbnail.url;
+        if (media.hasOwnProperty('sizes') && media.sizes.hasOwnProperty(this.props['preview_size'])) {
+            newState.url = media.sizes[this.props['preview_size']].url;
         }
         this.setState(newState);
         return this.props.onChange(this.props.acfKey, media.id);
