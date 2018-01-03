@@ -23,13 +23,16 @@ export default class Field extends Component {
         }
         return attributes;
     }
+    getFieldId() {
+        return `${this.props.fieldId ? this.props.fieldId : 'acf-'}${this.props.acfKey}`;
+    }
     render() {
         const TagName = this.props.tag ? this.props.tag : 'div';
         return (
             <TagName {...this.getAttributes()}>
                 {this.props.hideLabel ? '' : (
                     <div className={`acf-label`}>
-                        <label for={`acf-${this.props.acfKey}`}>
+                        <label for={this.getFieldId()}>
                             {this.props.label}
                             {this.props.required ? (<span class="acf-required">&nbsp;*</span>) : ''}
                         </label>
