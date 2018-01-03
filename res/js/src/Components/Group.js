@@ -8,6 +8,7 @@ import Url from './Url';
 import Password from './Password';
 import Relationship from './Relationship';
 import Repeater from './Repeater';
+import Image from './Image';
 import NotSupported from './NotSupported';
 
 // TODO: Make this hookable
@@ -20,7 +21,8 @@ export const ACF_COMPONENTS = {
     url: Url,
     password: Password,
     relationship: Relationship,
-    repeater: Repeater
+    repeater: Repeater,
+    image: Image
 };
 
 export default class Group extends Component {

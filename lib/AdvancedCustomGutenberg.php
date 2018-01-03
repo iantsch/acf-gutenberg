@@ -171,6 +171,10 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
             'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'getChoices'),
         ));
+        register_rest_route( 'acf-gutenberg/v1', '/media=(?P<attachmentId>[0-9]+)', array(
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => array($this, 'getMedia'),
+        ));
     }
 
     #TODO: Refactor
@@ -306,6 +310,11 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
             $posts[get_post_type()][get_the_ID()] = get_the_title();
         }
         return $posts;
+    }
+
+    public function getMedia(\WP_REST_Request $request) {
+        $attachmentId = $request->get_param('attachmentId');
+        return @wp_get_attachment_image_src( $attachmentId, 'thumbnail' )[0];
     }
 
     public function postAcfGroup(\WP_REST_Request $request) {
