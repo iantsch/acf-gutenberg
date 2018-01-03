@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import Field from '../Components/Field';
+import Field from './Field';
 
 export default class Password extends Component {
     onChange(e) {

@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import Field from '../Components/Field';
+import Field from './Field';
 
 export default class Email extends Component {
     onChange(e) {
