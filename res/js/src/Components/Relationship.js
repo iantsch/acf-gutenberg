@@ -150,6 +150,7 @@ export default class Relationship extends Component {
                                 {Object.keys(this.state.choices).length === 0 && this.state.choices.constructor === Object ? (
                                     <li>{wp.i18n.__('Too many filters')}</li>
                                 ) : Object.keys(this.state.choices).map(postType => {
+                                    //TODO: Adding Pagination on scroll
                                     return (
                                         <li>
                                             <span className="acf-rel-label">
