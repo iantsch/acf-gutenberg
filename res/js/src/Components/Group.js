@@ -9,6 +9,8 @@ import Password from './Password';
 import Relationship from './Relationship';
 import Repeater from './Repeater';
 import Image from './Image';
+import Select from './Select';
+import TrueFalse from './TrueFalse';
 import NotSupported from './NotSupported';
 
 // TODO: Make this hookable
@@ -22,7 +24,9 @@ export const ACF_COMPONENTS = {
     password: Password,
     relationship: Relationship,
     repeater: Repeater,
-    image: Image
+    image: Image,
+    select: Select,
+    ['true_false']: TrueFalse
 };
 
 export default class Group extends Component {
