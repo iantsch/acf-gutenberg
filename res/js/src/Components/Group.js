@@ -11,6 +11,8 @@ import Repeater from './Repeater';
 import Image from './Image';
 import Select from './Select';
 import TrueFalse from './TrueFalse';
+import ButtonGroup from './ButtonGroup';
+import Radio from './Radio';
 import NotSupported from './NotSupported';
 
 // TODO: Make this hookable
@@ -26,7 +28,9 @@ export const ACF_COMPONENTS = {
     repeater: Repeater,
     image: Image,
     select: Select,
-    ['true_false']: TrueFalse
+    ['true_false']: TrueFalse,
+    ['button_group']: ButtonGroup,
+    radio: Radio
 };
 
 export default class Group extends Component {
