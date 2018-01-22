@@ -179,7 +179,7 @@ class AdvancedCustomGutenberg extends AbstractSingleton {
 
     public function getPostMeta(\WP_REST_Request $request) {
         $postId = intval($request->get_param('id'));
-        return get_field_objects($postId);
+        return get_field_objects($postId, false);
     }
 
     public function getAcfFields() {
