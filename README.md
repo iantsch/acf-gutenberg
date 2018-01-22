@@ -2,8 +2,8 @@
 An Gutenberg wrapper for ACF Fieldgroups. It handles all necessary post type changes if the current post type does not meet the Gutenberg requirements (API support, Gutenberg flags).
 
 Tested with
-- Wordpress 4.9.1
-- Gutenberg 1.9.1
+- Wordpress 4.9.2
+- Gutenberg 2.0.0
 - ACF Pro 5.6.7
 
 ## How to use
@@ -28,7 +28,7 @@ Tested with
 ## What is currently missing [Priority]
 - Any forms of validation. [LOW]
 - Content fields [MID] _Copy/Paste existing Gutenberg blocks functionality for content and images._
-- Choice fields [HIGH]
+- Checkbox choice field [HIGH]
 - Relational fields (except Relationship) [HIGH]
 - Layout fields (except Repeater) [HIGH]
 - jQuery fields [LOW] _Maybe some preexisting react components?_
