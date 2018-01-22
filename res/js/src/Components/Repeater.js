@@ -66,7 +66,7 @@ export default class Repeater extends Component {
                                     return (
                                         <th {...this.getThAttributes(field.wrapper)}>
                                             {field.label}
-                                            {field.required ? (<span class="acf-required">&nbsp;*</span>) : ''}
+                                            {field.required ? (<span className="acf-required">&nbsp;*</span>) : ''}
                                             {field.instructions ? (<p className="description">{field.instructions}</p>) : ''}
                                         </th>
                                     )
@@ -97,8 +97,8 @@ export default class Repeater extends Component {
                                         </td>
                                     )}
                                     <td className="acf-row-handle remove">
-                                        <a class="acf-icon -plus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Add Row')} onClick={() => this.onModifyRows(i)} />
-                                        <a class="acf-icon -minus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Remove Row')} onClick={() => this.onModifyRows(i, 'remove')} />
+                                        <a className="acf-icon -plus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Add Row')} onClick={() => this.onModifyRows(i)} />
+                                        <a className="acf-icon -minus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Remove Row')} onClick={() => this.onModifyRows(i, 'remove')} />
                                     </td>
                                 </tr>
                             )
@@ -106,7 +106,7 @@ export default class Repeater extends Component {
                         </tbody>
                     </table>
                     <div className="acf-actions">
-                        <a class="acf-button button button-primary" href="#" onClick={() => this.onModifyRows(value.length)}>{buttonLabel}</a>
+                        <a className="acf-button button button-primary" href="#" onClick={() => this.onModifyRows(value.length)}>{buttonLabel}</a>
                     </div>
                 </div>
             </Field>

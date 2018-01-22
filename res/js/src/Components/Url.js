@@ -25,7 +25,7 @@ export default class Url extends Component {
         return (
             <Field {...this.props}>
                 <div className={`acf-input-wrap acf-url`}>
-                    <i class="acf-icon -globe -small" />
+                    <i className="acf-icon -globe -small" />
                     <input {...this.getAttributes()}/>
                 </div>
             </Field>

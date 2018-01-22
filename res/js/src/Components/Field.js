@@ -35,14 +35,14 @@ export default class Field extends Component {
                     <div className={`acf-label`}>
                         <label for={this.getFieldId()}>
                             {this.props.label}
-                            {this.props.required ? (<span class="acf-required">&nbsp;*</span>) : ''}
+                            {this.props.required ? (<span className="acf-required">&nbsp;*</span>) : ''}
                         </label>
                         {this.props.instructions ? (<p className="description">{this.props.instructions}</p>) : ''}
                     </div>
                 )}
                 <div className={`acf-input`}>
-                    {this.props.prepend ? (<div class="acf-input-prepend" dangerouslySetInnerHTML={{__html: this.props.prepend}}/>) : ''}
-                    {this.props.append ? (<div class="acf-input-append" dangerouslySetInnerHTML={{__html: this.props.append}}/>) : ''}
+                    {this.props.prepend ? (<div className="acf-input-prepend" dangerouslySetInnerHTML={{__html: this.props.prepend}}/>) : ''}
+                    {this.props.append ? (<div className="acf-input-append" dangerouslySetInnerHTML={{__html: this.props.append}}/>) : ''}
                     {this.props.children}
                 </div>
             </TagName>

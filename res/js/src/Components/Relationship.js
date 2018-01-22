@@ -187,7 +187,7 @@ export default class Relationship extends Component {
                                         <li>
                                             <span className="acf-rel-item">
                                                 {this.state.posts[postId]}
-                                                <a href="#" class="acf-icon -minus small dark" onClick={()=> this.onChange(postId, 'remove')} />
+                                                <a href="#" className="acf-icon -minus small dark" onClick={()=> this.onChange(postId, 'remove')} />
                                             </span>
                                         </li>
                                     )
