@@ -28,7 +28,6 @@ Tested with
 ## What is currently missing [Priority]
 - Any forms of validation. [LOW]
 - Content fields [MID] _Copy/Paste existing Gutenberg blocks functionality for content and images._
-- Checkbox choice field [HIGH]
 - Relational fields (except Relationship) [HIGH]
 - Layout fields (except Repeater) [HIGH]
 - jQuery fields [LOW] _Maybe some preexisting react components?_

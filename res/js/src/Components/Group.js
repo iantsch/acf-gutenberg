@@ -13,6 +13,7 @@ import Select from './Select';
 import TrueFalse from './TrueFalse';
 import ButtonGroup from './ButtonGroup';
 import Radio from './Radio';
+import Checkbox from './Checkbox';
 import NotSupported from './NotSupported';
 
 // TODO: Make this hookable
@@ -30,7 +31,8 @@ export const ACF_COMPONENTS = {
     select: Select,
     ['true_false']: TrueFalse,
     ['button_group']: ButtonGroup,
-    radio: Radio
+    radio: Radio,
+    checkbox: Checkbox
 };
 
 export default class Group extends Component {
