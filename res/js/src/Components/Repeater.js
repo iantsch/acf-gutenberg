@@ -9,23 +9,14 @@ export default class Repeater extends Component {
     }
     onChange(i, key, value) {
         let newValue = this.getValue();
-        newValue[i][this.getNameByKey(key)] = value;
+        newValue[i][key] = value;
         this.props.onChange(this.props.acfKey, newValue);
-    }
-    getNameByKey(key) {
-        let name = false;
-        this.props['sub_fields'].forEach(field => {
-            if (field.key === key && false === name) {
-                name = field.name;
-            }
-        });
-        return name;
     }
     getFieldProps(field, row, i) {
         let fieldProps = JSON.parse(JSON.stringify(field));
         fieldProps.fieldId = `'acf-${this.props.acfKey}-${i}-`;
         fieldProps.fieldName = `acf[${this.props.acfKey}][${i}]`;
-        fieldProps.value = row[field.name];
+        fieldProps.value = row[field.key];
         fieldProps.hideLabel = this.props.layout === 'table';
         fieldProps.tag = this.props.layout === 'table' ? 'td' : false;
         return fieldProps;
@@ -35,7 +26,7 @@ export default class Repeater extends Component {
         if (type === 'add') {
             var emptyRow = {};
             this.props['sub_fields'].map(field => {
-                emptyRow[field.name] = field['default_value'];
+                emptyRow[field.key] = field['default_value'];
             });
             newValue.splice(i, 0, emptyRow);
         } else {
