@@ -1,9 +1,17 @@
 import {Component} from 'react';
+import update from 'immutability-helper'
 import Field from './Field';
+import Row from './Row';
 import {ACF_COMPONENTS} from './Group';
 import NotSupported from './NotSupported';
 
 export default class Repeater extends Component {
+    moveRow(id, afterId) {
+        const rows = update(this.props.rows, {
+            $splice: [[id, 1], [afterId, 0, this.props.rows[id]]]
+        });
+        this.props.onChange(this.props.acfKey, rows)
+    }
     getValue() {
         return Array.isArray(this.props.value) ? this.props.value : [];
     }
@@ -67,33 +75,32 @@ export default class Repeater extends Component {
                             </thead>
                         ) : ''}
                         <tbody>
-                        {value.map((row, i) => {
-                            let updateRow = (key, value) => {
-                                this.onChange(i, key, value)
-                            };
-                            return (
-                                <tr>
-                                    <td className="acf-row-handle order"><span>{(i + 1)}</span></td>
-                                    {this.props.layout === 'table' ? this.props['sub_fields'].map(field => {
-                                        let TagName = ACF_COMPONENTS[field.type] ? ACF_COMPONENTS[field.type]: NotSupported;
-                                        let fieldProps = this.getFieldProps(field, row, i);
-                                        return (<TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />);
-                                    }) : (
-                                        <td className={`acf-fields${this.props.layout === 'row'? ' -left' : ''}`}>
-                                            {this.props['sub_fields'].map(field => {
-                                                let TagName = ACF_COMPONENTS[field.type] ? ACF_COMPONENTS[field.type]: NotSupported;
-                                                let fieldProps = this.getFieldProps(field, row, i);
-                                                return (<TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />);
-                                            })}
+                            {value.map((row, i) => {
+                                let updateRow = (key, value) => {
+                                    this.onChange(i, key, value)
+                                };
+                                return (
+                                    <Row key={i} id={i} moveRow={(id, afterId) => this.moveRow(id, afterId)}>
+                                        {this.props.layout === 'table' ? this.props['sub_fields'].map(field => {
+                                            let TagName = ACF_COMPONENTS[field.type] ? ACF_COMPONENTS[field.type]: NotSupported;
+                                            let fieldProps = this.getFieldProps(field, row, i);
+                                            return (<TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />);
+                                        }) : (
+                                            <td className={`acf-fields${this.props.layout === 'row'? ' -left' : ''}`}>
+                                                {this.props['sub_fields'].map(field => {
+                                                    let TagName = ACF_COMPONENTS[field.type] ? ACF_COMPONENTS[field.type]: NotSupported;
+                                                    let fieldProps = this.getFieldProps(field, row, i);
+                                                    return (<TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />);
+                                                })}
+                                            </td>
+                                        )}
+                                        <td className="acf-row-handle remove">
+                                            <a className="acf-icon -plus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Add Row')} onClick={() => this.onModifyRows(i)} />
+                                            <a className="acf-icon -minus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Remove Row')} onClick={() => this.onModifyRows(i, 'remove')} />
                                         </td>
-                                    )}
-                                    <td className="acf-row-handle remove">
-                                        <a className="acf-icon -plus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Add Row')} onClick={() => this.onModifyRows(i)} />
-                                        <a className="acf-icon -minus small acf-js-tooltip" style={{display: 'block'}} title={wp.i18n.__('Remove Row')} onClick={() => this.onModifyRows(i, 'remove')} />
-                                    </td>
-                                </tr>
-                            )
-                        })}
+                                    </Row>
+                                )
+                            })}
                         </tbody>
                     </table>
                     <div className="acf-actions">

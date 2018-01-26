@@ -1,6 +1,8 @@
 import {Component} from 'react';
+import update from 'immutability-helper';
 import Field from './Field';
 import {ACF_COMPONENTS} from './Group';
+import Layout from './Layout';
 import NotSupported from './NotSupported';
 
 export default class FlexibleContent extends Component {
@@ -10,6 +12,14 @@ export default class FlexibleContent extends Component {
             toggled: false
         }
     }
+
+    moveRow(id, afterId) {
+        const rows = update(this.props.rows, {
+            $splice: [[id, 1], [afterId, 0, this.props.rows[id]]]
+        });
+        this.props.onChange(this.props.acfKey, rows);
+    }
+
     getValue() {
         return Array.isArray(this.props.value) ? this.props.value : [];
     }
@@ -82,7 +92,7 @@ export default class FlexibleContent extends Component {
             <Field {...this.props}>
                 <div className={`acf-flexible-content`}>
                     { value < 1 ? (
-                        <div className="no-value-message">
+                        <div className="values no-value-message">
                             {wp.i18n.__('Click the "Add Row" button below to start creating your layout')}
                         </div>
                     ) : (
@@ -93,11 +103,7 @@ export default class FlexibleContent extends Component {
                                         this.onChange(i, layoutKey, key, value)
                                     };
                                 return (
-                                    <div className="layout">
-                                        <div className="acf-fc-layout-handle ui-sortable-handle" title="Drag to reorder" data-name="collapse-layout">
-                                            <span className="acf-fc-layout-order">{i + 1}</span>
-                                            {this.props.layouts[layoutKey].label}
-                                        </div>
+                                    <Layout key={i} id={i} moveRow={(id, afterId) => this.moveRow(id, afterId)} label={this.props.layouts[layoutKey].label}>
                                         <div className="acf-fc-layout-controlls">
                                             <a className="acf-icon -plus small light acf-js-tooltip" href="#"  style={{display: 'block'}} title={wp.i18n.__('Add Layout')} onClick={() => this.onDisplayLayouts(i)}/>
                                             <a className="acf-icon -minus small light acf-js-tooltip" href="#" style={{display: 'block'}} title={wp.i18n.__('Remove Layout')} onClick={() => this.onModifyRows(i, 'remove')}/>
@@ -111,7 +117,7 @@ export default class FlexibleContent extends Component {
                                                 return (<TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />);
                                             }) }
                                         </div>
-                                    </div>
+                                    </Layout>
                                 );
                             }) }
                         </div>

@@ -1,4 +1,7 @@
 import {Component} from 'react';
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+
 import Text from './Text';
 import Textarea from './Textarea';
 import Number from './Number';
@@ -37,6 +40,7 @@ export const ACF_COMPONENTS = {
     ['flexible_content']: FlexibleContent
 };
 
+@DragDropContext(HTML5Backend)
 export default class Group extends Component {
     constructor(props) {
         super(props);
