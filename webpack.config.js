@@ -36,12 +36,14 @@ module.exports = {
                                 "ie 11"
                             ]
                         }
-                    }]
+                    }],
+                    'stage-2'
                 ],
                 "plugins": [
                     [ "transform-react-jsx", {
                         "pragma": "wp.element.createElement"
-                    }]
+                    }],
+                    "transform-decorators-legacy"
                 ]
             }
         }]
