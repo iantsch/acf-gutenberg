@@ -3,7 +3,7 @@ An Gutenberg wrapper for ACF Fieldgroups. It handles all necessary post type cha
 
 Tested with
 - Wordpress 4.9.2
-- Gutenberg 2.0.0
+- Gutenberg 2.1.0
 - ACF Pro 5.6.7
 
 ## How to use
@@ -20,19 +20,33 @@ Tested with
 
 ## What has happend so far?
 - Register a timestamp post meta field for each ACF field group to enable update button on changes.
-- Register more than one gutenberg block with a single compiled JS file. Since there are no nested gutenberg blocks (yet), work around this issue.
-- Basic fields (Text, E-Mail,…)
-- Repeater field
-- Relationship field (Yay a complex react component with custom JSON API)
+- Register field groups as gutenberg block, since there are no nested gutenberg blocks (yet), working around this issue.
+- Components
+  - Button Group
+  - Checkbox
+  - Email
+  - Flexible Content
+  - Image
+  - Number
+  - Password
+  - Radio
+  - Range
+  - Relationship
+  - Repeater
+  - Select
+  - Text
+  - Textarea
+  - TrueFalse
+  - Url
 
 ## What is currently missing [Priority]
 - Any forms of validation. [LOW]
-- Content fields [MID] _Copy/Paste existing Gutenberg blocks functionality for content and images._
-- Relational fields (except Relationship) [HIGH]
-- Layout fields (except Repeater) [HIGH]
+- Content fields (except image) [MID] _Copy/Paste existing Gutenberg blocks functionality for content and images._
+- Relational fields (except relationship) [HIGH]
+- Layout fields (except repeater and flexible content) [HIGH]
 - jQuery fields [LOW] _Maybe some preexisting react components?_
 - Conditional fields [MID]
-- Translation files (Everything is wrapped in i10n functions) [LOW]
+- Translation files (Everything is wrapped in i10n functions though) [LOW]
 - Style adaptions [LOW] _Gutenberg interferes with pre-existing ACF styles pretty much_
 
 ## Troubleshooting
