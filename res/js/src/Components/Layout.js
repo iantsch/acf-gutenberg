@@ -6,10 +6,16 @@ import { DragSource, DropTarget } from 'react-dnd';
 const rowSource = {
     beginDrag(props) {
         return { id: props.id }
+    },
+    endDrag(props) {
+        console.log(props)
     }
 };
 
 const rowTarget = {
+    drop(props) {
+        console.log(props)
+    },
     hover(props, monitor, component) {
         let dragIndex = monitor.getItem().id;
         let hoverIndex = props.id;
@@ -35,11 +41,11 @@ const rowTarget = {
     }
 };
 
-@DropTarget('row', rowTarget, (connect, monitor) => ({
+@DropTarget(props => props.type, rowTarget, (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver()
 }))
-@DragSource('row', rowSource, (connect, monitor) => ({
+@DragSource(props => props.type, rowSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
@@ -47,10 +53,13 @@ const rowTarget = {
 export default class Layout extends Component {
     static propTypes = {
         connectDragSource: PropTypes.func.isRequired,
+        connectDragPreview: PropTypes.func.isRequired,
         connectDropTarget: PropTypes.func.isRequired,
         isDragging: PropTypes.bool.isRequired,
         isOver: PropTypes.bool.isRequired,
-        id: PropTypes.any.isRequired,
+        type: PropTypes.string.isRequired,
+        collapsed: PropTypes.bool.isRequired,
+        position: PropTypes.any.isRequired,
         label: PropTypes.string.isRequired,
         moveRow: PropTypes.func.isRequired
     };
@@ -62,15 +71,16 @@ export default class Layout extends Component {
             connectDragSource,
             connectDragPreview,
             connectDropTarget,
-            id,
+            position,
+            collapsed,
             label
         } = this.props;
         const opacity = isDragging ? .5 : isOver ? .2 : 1;
-        return connectDropTarget(
-            connectDragPreview(
-                <div className="layout" style={{opacity}}>
-                    {connectDragSource(<div className="acf-fc-layout-handle ui-sortable-handle" title="Drag to reorder" data-name="collapse-layout">
-                        <span className="acf-fc-layout-order">{id + 1}</span>
+        return connectDragPreview(
+            connectDropTarget(
+                <div className={`layout${collapsed ? ' -collapsed' : ''}`} style={{opacity}}>
+                    {connectDragSource(<div className="acf-fc-layout-handle" title={wp.i18n.__("Drag to reorder")}>
+                        <span className="acf-fc-layout-order">{position}</span>
                         {label}
                     </div>)}
                     {this.props.children}

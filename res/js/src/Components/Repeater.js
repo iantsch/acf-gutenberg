@@ -80,7 +80,7 @@ export default class Repeater extends Component {
                                     this.onChange(i, key, value)
                                 };
                                 return (
-                                    <Row key={i} id={i} moveRow={(id, afterId) => this.moveRow(id, afterId)}>
+                                    <Row key={`${this.props.acfKey}-${i}`} id={i} moveRow={(id, afterId) => this.moveRow(id, afterId)} type={this.props.acfKey}>
                                         {this.props.layout === 'table' ? this.props['sub_fields'].map(field => {
                                             let TagName = ACF_COMPONENTS[field.type] ? ACF_COMPONENTS[field.type]: NotSupported;
                                             let fieldProps = this.getFieldProps(field, row, i);

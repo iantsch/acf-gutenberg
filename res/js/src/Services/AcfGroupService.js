@@ -30,7 +30,7 @@ export default class AcfGroupService {
             contentType: 'application/json',
             success: response => {
                 this.fetch = null;
-                this.store.dispatch(fetchFieldsSuccess(response));
+                this.store.dispatch(fetchFieldsSuccess(this.addKeysToDraggables(response)));
             },
             error: error => {
                 this.fetch = null;
@@ -39,6 +39,34 @@ export default class AcfGroupService {
         };
         this.store.dispatch(fetchFieldsRequest());
         wp.apiRequest(this.fetch);
+    }
+
+    addKeysToDraggables(obj) {
+        const draggables = [
+            'flexible_content',
+            'repeater'
+        ];
+        for (var property in obj) {
+            if (obj.hasOwnProperty(property)) {
+                if (typeof obj[property] === 'object' && obj[property] !== null) {
+                    obj[property] = this.addKeysToDraggables(obj[property]);
+                }
+                if (!obj.hasOwnProperty('type') || (obj.hasOwnProperty('type') && draggables.indexOf(obj.type) === -1 )) {
+                    continue;
+                }
+                if (!obj.hasOwnProperty('key') || !obj.hasOwnProperty('value')) {
+                    continue;
+                }
+                if (!Array.isArray(obj.value)) {
+                    continue;
+                }
+                obj.value.map((row, i) => {
+                    obj.value[i].key = `${obj.key}-${i}`;
+                    obj.value.id = i;
+                })
+            }
+        }
+        return obj;
     }
 
     checkForPost() {

@@ -37,21 +37,20 @@ const rowTarget = {
 
 @DragSource(props => props.type, rowSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
 }))
 @DropTarget(props => props.type, rowTarget, (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver()
 }))
-export default class Row extends Component {
+export default class ListItem extends Component {
     static propTypes = {
         connectDragSource: PropTypes.func.isRequired,
-        connectDragPreview: PropTypes.func.isRequired,
         connectDropTarget: PropTypes.func.isRequired,
         isDragging: PropTypes.bool.isRequired,
         isOver: PropTypes.bool.isRequired,
         id: PropTypes.any.isRequired,
+        key: PropTypes.any.isRequired,
         type: PropTypes.string.isRequired,
         moveRow: PropTypes.func.isRequired
     };
@@ -60,19 +59,14 @@ export default class Row extends Component {
             isDragging,
             isOver,
             connectDragSource,
-            connectDragPreview,
-            connectDropTarget,
-            id
+            connectDropTarget
         } = this.props;
         const opacity = isDragging ? .5 : isOver ? .2 : 1;
         return connectDropTarget(
-            connectDragPreview(
-                <tr style={{opacity}}>
-                    {connectDragSource(<td className="acf-row-handle order">
-                        <span>{(id + 1)}</span>
-                    </td>)}
+            connectDragSource(
+                <li style={{opacity}}>
                     {this.props.children}
-                </tr>
+                </li>
             )
         )
     }

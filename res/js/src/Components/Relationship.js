@@ -1,5 +1,6 @@
 import {Component} from 'react';
 import Field from './Field';
+import ListItem from './ListItem';
 
 export default class Relationship extends Component {
     constructor(props) {
@@ -23,8 +24,20 @@ export default class Relationship extends Component {
             this.fetchRemote('terms', this.props.taxonomy);
         }
     }
+
+    getValue() {
+        return Array.isArray(this.props.value) ? this.props.value : []
+    }
+
+    moveRow(id, afterId) {
+        let value = update(this.props.value, {
+            $splice: [[id, 1], [afterId, 0, this.props.value[id]]]
+        });
+        this.props.onChange(this.props.acfKey, value);
+    }
+
     onChange(postId, action) {
-        let value = JSON.parse(JSON.stringify(this.props.value ? this.props.value : []));
+        let value = JSON.parse(JSON.stringify(this.getValue()));
         if (action === 'add') {
             value.push(postId);
         } else if (action === 'remove') {
@@ -97,7 +110,7 @@ export default class Relationship extends Component {
     }
     componentDidUpdate() {
         if (this.fetchPosts) {
-            this.fetchRemote('posts', this.props.value ? this.props.value : []);
+            this.fetchRemote('posts', this.getValue());
             this.fetchPosts = false;
         }
     }
@@ -181,15 +194,15 @@ export default class Relationship extends Component {
                         <div className="values">
                             <ul className="acf-bl list ui-sortable">
                                 {Object.keys(this.state.posts).length === 0 && this.state.posts.constructor === Object ? (
-                                    <li>{wp.i18n.__('Too many filters')}</li>
-                                ) : Object.keys(this.state.posts).map(postId => {
+                                    <li>{wp.i18n.__('No post selected')}</li>
+                                ) : Object.keys(this.state.posts).map((postId, i) => {
                                     return (
-                                        <li>
+                                        <ListItem type={this.props.acfKey} id={i} key={postId} moveRow={(id, afterId) => this.moveRow(id, afterId)}>
                                             <span className="acf-rel-item">
                                                 {this.state.posts[postId]}
                                                 <a href="#" className="acf-icon -minus small dark" onClick={()=> this.onChange(postId, 'remove')} />
                                             </span>
-                                        </li>
+                                        </ListItem>
                                     )
                                 })}
                             </ul>
