@@ -10,6 +10,7 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-2": "^6.24.1",
+    "cross-env": "^5.1.1",
     "file-loader": "^1.1.5",
     "immutability-helper": "^2.4.0",
     "prop-types": "^15.6.0",
@@ -25,9 +26,9 @@
   "dependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --watch",
-    "production": "NODE_ENV=production webpack",
-    "live": "NODE_ENV=live webpack"
+    "dev": "cross-env webpack --watch",
+    "production": "cross-env NODE_ENV=production webpack",
+    "live": "cross-env NODE_ENV=live webpack"
   },
   "repository": {
     "type": "git",
