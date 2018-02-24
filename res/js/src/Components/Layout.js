@@ -6,16 +6,10 @@ import { DragSource, DropTarget } from 'react-dnd';
 const rowSource = {
     beginDrag(props) {
         return { id: props.id }
-    },
-    endDrag(props) {
-        console.log(props)
     }
 };
 
 const rowTarget = {
-    drop(props) {
-        console.log(props)
-    },
     hover(props, monitor, component) {
         let dragIndex = monitor.getItem().id;
         let hoverIndex = props.id;

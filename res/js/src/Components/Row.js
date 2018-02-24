@@ -14,6 +14,8 @@ const rowTarget = {
         let dragIndex = monitor.getItem().id;
         let hoverIndex = props.id;
 
+        console.log(dragIndex, hoverIndex);
+
         if (draggedIndex === hoverIndex) {
             return;
         }

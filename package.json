@@ -1,6 +1,6 @@
 {
   "name": "acf-gutenberg",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Render Advanced Custom Field Groups in Gutenberg Editor.",
   "main": "webpack.config.js",
   "devDependencies": {

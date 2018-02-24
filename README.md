@@ -2,9 +2,9 @@
 An Gutenberg wrapper for ACF Fieldgroups. It handles all necessary post type changes if the current post type does not meet the Gutenberg requirements (API support, Gutenberg flags).
 
 Tested with
-- Wordpress 4.9.2
-- Gutenberg 2.1.0
-- ACF Pro 5.6.7
+- Wordpress 4.9.4
+- Gutenberg 2.2.0
+- ACF Pro 5.6.8
 
 ## How to use
 1. Download and extract into WordPress plugins folder

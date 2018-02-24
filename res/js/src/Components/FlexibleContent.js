@@ -15,7 +15,6 @@ export default class FlexibleContent extends Component {
     }
 
     moveRow(id, afterId) {
-        console.log('moveRow',id, afterId);
         let value = update(this.props.value, {
             $splice: [[id, 1], [afterId, 0, this.props.value[id]]]
         });
@@ -25,11 +24,13 @@ export default class FlexibleContent extends Component {
     getValue() {
         return Array.isArray(this.props.value) ? this.props.value : [];
     }
+
     onChange(i, layoutKey, key, value) {
         let newValue = this.getValue();
         newValue[i][key] = value;
         this.props.onChange(this.props.acfKey, newValue);
     }
+
     getFieldProps(field, row, i) {
         let fieldProps = JSON.parse(JSON.stringify(field));
         fieldProps.fieldId = `'acf-${this.props.acfKey}-${i}-`;
@@ -37,6 +38,7 @@ export default class FlexibleContent extends Component {
         fieldProps.value = row[field.key];
         return fieldProps;
     }
+
     onModifyRows(i, type = 'add', layout = false) {
         if (this.state.toggled !== false) {
             this.setState({toggled: false});
@@ -44,7 +46,7 @@ export default class FlexibleContent extends Component {
         let value = this.getValue();
         if (type === 'add') {
             var emptyRow = {
-                'acf_fc_layout' : this.props.layouts[layout].name
+                'acf_fc_layout': this.props.layouts[layout].name
             };
             this.props.layouts[layout]['sub_fields'].map(field => {
                 emptyRow[field.key] = field['default_value'];
@@ -55,34 +57,40 @@ export default class FlexibleContent extends Component {
         }
         this.props.onChange(this.props.acfKey, value);
     }
-    onDisplayLayouts(i){
+
+    onDisplayLayouts(i) {
         let toggled = false;
         if (this.state.toggled !== i) {
             toggled = i;
         }
         this.setState({toggled});
     }
-    onCollapseToggle(i){
+
+    onCollapseToggle(i) {
         let collapsed = JSON.parse(JSON.stringify(this.state.collapsed));
         let index = collapsed.indexOf(i);
-        if (index !== -1){
-            collapsed.splice(index,1);
+        if (index !== -1) {
+            collapsed.splice(index, 1);
         } else {
             collapsed.push(i);
         }
         this.setState({collapsed})
     }
+
     displayLayouts(i) {
         return (
             <div className="acf-fc-popup -top -left" style={{bottom: 'calc(100% + 8px)', right: 0}}>
                 <ul>
                     {Object.keys(this.props.layouts).map(key => {
-                        return (<li><a href="#" onClick={() => this.onModifyRows(i, 'add', key)}>{this.props.layouts[key].label}</a></li>)
+                        return (<li><a href="#"
+                                       onClick={() => this.onModifyRows(i, 'add', key)}>{this.props.layouts[key].label}</a>
+                        </li>)
                     })}
                 </ul>
             </div>
         );
     }
+
     getLayoutKey(row) {
         let layoutSlug = row['acf_fc_layout'],
             layoutKey = false;
@@ -95,11 +103,12 @@ export default class FlexibleContent extends Component {
         });
         return layoutKey;
     }
+
     getFields(layoutKey) {
         return this.props.layouts[layoutKey]['sub_fields'];
     }
+
     render() {
-        console.log(this.state);
         let buttonLabel = this.props['button_label'] ? this.props['button_label'] : wp.i18n.__('Add Row');
         let value = this.getValue();
         return (
@@ -117,11 +126,20 @@ export default class FlexibleContent extends Component {
                                         this.onChange(i, layoutKey, key, value)
                                     };
                                 return (
-                                    <Layout key={row.key} id={row.id} position={i+1} moveRow={(id, afterId) => this.moveRow(id, afterId)} label={this.props.layouts[layoutKey].label} type={this.props.acfKey} collapsed={this.state.collapsed.indexOf(i) > -1}>
+                                    <Layout key={row.key} id={row.id} position={i+1}
+                                            moveRow={(id, afterId) => this.moveRow(id, afterId)}
+                                            label={this.props.layouts[layoutKey].label} type={this.props.acfKey}
+                                            collapsed={this.state.collapsed.indexOf(i) > -1}>
                                         <div className="acf-fc-layout-controlls">
-                                            <a className="acf-icon -plus small light acf-js-tooltip" href="#"  style={{display: 'block'}} title={wp.i18n.__('Add Layout')} onClick={() => this.onDisplayLayouts(i)}/>
-                                            <a className="acf-icon -minus small light acf-js-tooltip" href="#" style={{display: 'block'}} title={wp.i18n.__('Remove Layout')} onClick={() => this.onModifyRows(i, 'remove')}/>
-                                            <a className="acf-icon -collapse small acf-js-tooltip" href="#" data-name="collapse-layout" title={wp.i18n.__("Click to toggle")} onClick={() => this.onCollapseToggle(i)}/>
+                                            <a className="acf-icon -plus small light acf-js-tooltip" href="#"
+                                               style={{display: 'block'}} title={wp.i18n.__('Add Layout')}
+                                               onClick={() => this.onDisplayLayouts(i)}/>
+                                            <a className="acf-icon -minus small light acf-js-tooltip" href="#"
+                                               style={{display: 'block'}} title={wp.i18n.__('Remove Layout')}
+                                               onClick={() => this.onModifyRows(i, 'remove')}/>
+                                            <a className="acf-icon -collapse small acf-js-tooltip" href="#"
+                                               data-name="collapse-layout" title={wp.i18n.__("Click to toggle")}
+                                               onClick={() => this.onCollapseToggle(i)}/>
                                         </div>
                                         {this.state.toggled === i ? this.displayLayouts(i) : ''}
                                         {this.state.collapsed.indexOf(i) === -1 ? (
@@ -129,7 +147,8 @@ export default class FlexibleContent extends Component {
                                                 { this.getFields(layoutKey).map(field => {
                                                     let TagName = ACF_COMPONENTS[field.type] ? ACF_COMPONENTS[field.type] : NotSupported;
                                                     let fieldProps = this.getFieldProps(field, row, i);
-                                                    return (<TagName acfKey={field.key} {...fieldProps} onChange={updateRow} />);
+                                                    return (<TagName acfKey={field.key} {...fieldProps}
+                                                                     onChange={updateRow}/>);
                                                 }) }
                                             </div>
                                         ) : ''}
@@ -140,7 +159,8 @@ export default class FlexibleContent extends Component {
                     )}
                     <div className="acf-actions" style={{position: 'relative'}}>
                         {this.state.toggled === value.length ? this.displayLayouts(value.length) : ''}
-                        <a className="acf-button button button-primary" href="#" onClick={() => this.onDisplayLayouts(value.length)}>
+                        <a className="acf-button button button-primary" href="#"
+                           onClick={() => this.onDisplayLayouts(value.length)}>
                             {buttonLabel}
                         </a>
                     </div>
