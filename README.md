@@ -63,4 +63,4 @@ Create an issue in this repo.
 Feel free to get in contact: create an issue here or write an email to iantsch@gmail.com or tweet @iantsch.
 
 ## Credits
-[@iantsch](https://twitter.com/iantsch) - [web developer](https://mbt.wien) behind this and other project.
+[@iantsch](https://twitter.com/iantsch) - [web developer](https://mbt.wien) behind this and other projects.
