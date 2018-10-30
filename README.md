@@ -61,3 +61,6 @@ Create an issue in this repo.
 
 ## You have thoughts to share, want to collaborate?
 Feel free to get in contact: create an issue here or write an email to iantsch@gmail.com or tweet @iantsch.
+
+## Credits
+[@iantsch](https://twitter.com/iantsch) - [web developer](https://mbt.wien) behind this and other project.
